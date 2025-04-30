@@ -1,0 +1,35 @@
+﻿<Window x:Class="VizprogProjekt.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        Title="Vizprog-projekt vázlat" Height="600" Width="1000" Background="#E5E5E5">
+
+    <DockPanel>
+        <!-- Fejléc -->
+        <TextBlock DockPanel.Dock="Top" Text="Vizprog-projekt vázlat"
+                   FontSize="24" FontWeight="Bold"
+                   Background="#B0B0B0" Foreground="White"
+                   Padding="20"/>
+
+        <!-- Telephely választó -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="20">
+            <ComboBox Width="200" Height="30" x:Name="telephelyComboBox" SelectionChanged="telephelyComboBox_SelectionChanged">
+                <ComboBoxItem>Teszt telephely 1</ComboBoxItem>
+                <ComboBoxItem>Teszt telephely 2</ComboBoxItem>
+            </ComboBox>
+        </StackPanel>
+
+        <!-- Diagram konténerek -->
+        <WrapPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <!-- Kördiagram -->
+            <Border Width="250" Height="250" Background="#D3D3D3" Margin="10">
+                <lvc:PieChart Series="{Binding PieSeries}" LegendLocation="Bottom"/>
+            </Border>
+
+            <!-- Üres helyek további diagramoknak -->
+            <Border Width="250" Height="250" Background="#D3D3D3" Margin="10"/>
+            <Border Width="250" Height="250" Background="#D3D3D3" Margin="10"/>
+            <Border Width="250" Height="250" Background="#D3D3D3" Margin="10"/>
+        </WrapPanel>
+    </DockPanel>
+</Window>
