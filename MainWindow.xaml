@@ -2,34 +2,117 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-        Title="Vizprog-projekt" Height="600" Width="1000" Background="#E5E5E5">
+        Title="Vizprog-projekt beadandó" Height="600" Width="1000" Background="#E5E5E5">
 
     <DockPanel>
         <!-- Fejléc -->
-        <TextBlock DockPanel.Dock="Top" Text="Vizprog-projekt vázlat"
+        <TextBlock DockPanel.Dock="Top" Text="Adventure Works"
                    FontSize="24" FontWeight="Bold"
                    Background="#B0B0B0" Foreground="White"
                    Padding="20"/>
 
-        <!-- Telephely választó -->
-        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="20">
-            <ComboBox Width="200" Height="30" x:Name="telephelyComboBox" SelectionChanged="telephelyComboBox_SelectionChanged">
-                <ComboBoxItem>Teszt telephely 1</ComboBoxItem>
-                <ComboBoxItem>Teszt telephely 2</ComboBoxItem>
-            </ComboBox>
+        <!-- Footer szöveg közvetlenül a cím alatt -->
+        <StackPanel DockPanel.Dock="Bottom" Background="#B0B0B0">
+            <TextBlock Text="Cs. Nagy Dániel - FN25MA | Muskó Milán - HYZ9ZM | Sári Bence - OK3ZO0 | Sütő Gergely - O6Z7RS"
+                       FontSize="14"
+                       Foreground="White"
+                       TextAlignment="Center"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Height="30px"
+                       TextWrapping="Wrap"/>
         </StackPanel>
 
         <!-- Diagram konténerek -->
-        <WrapPanel Margin="20" HorizontalAlignment="Center" VerticalAlignment="Top">
-            <!-- Kördiagram -->
-            <Border Width="250" Height="250" Background="#D3D3D3" Margin="10">
-                <lvc:PieChart Series="{Binding PieSeries}" LegendLocation="Bottom"/>
-            </Border>
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-            <!-- Üres helyek további diagramoknak -->
-            <Border Width="250" Height="250" Background="#D3D3D3" Margin="10"/>
-            <Border Width="250" Height="250" Background="#D3D3D3" Margin="10"/>
-            <Border Width="250" Height="250" Background="#D3D3D3" Margin="10"/>
-        </WrapPanel>
+            <!-- 1. CostRate PieChart -->
+            <StackPanel Grid.Row="0" Grid.Column="0" Margin="10" Width="300" Height="330">
+                <TextBlock HorizontalAlignment="Center" FontSize="16" FontWeight="Bold">
+            <Run Text="Beszerzési Költség ($)" />
+            <Run Text="🛈" Foreground="DarkSlateBlue">
+                <Run.ToolTip>
+                    <ToolTip Content="Adott telephelyen gyártott 1 termékhez szükséges anyagok beszerzési költsége. (%-os elosztásban)." />
+                </Run.ToolTip>
+            </Run>
+                </TextBlock>
+                <Border Background="#D3D3D3" Height="250">
+                    <lvc:PieChart Series="{Binding CostRateSeries}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- 2. Availability PieChart -->
+            <StackPanel Grid.Row="0" Grid.Column="1" Margin="10" Width="300" Height="330">
+                <TextBlock HorizontalAlignment="Center" FontSize="16" FontWeight="Bold">
+            <Run Text="Ráfordítható Összeg ($) " />
+            <Run Text="🛈" Foreground="DarkSlateBlue">
+                <Run.ToolTip>
+                    <ToolTip Content="Az egyes részlegeknek a beszerzésre fordítható összege 1 termékhez." />
+                </Run.ToolTip>
+            </Run>
+                </TextBlock>
+                <Border Background="#D3D3D3" Height="250">
+                    <lvc:PieChart Series="{Binding AvailabilitySeries}"/>
+                </Border>
+            </StackPanel>
+
+            <!-- 3. Quantity ColumnChart -->
+            <StackPanel Grid.Row="1" Grid.Column="0" Margin="10" Width="300" Height="330">
+                <TextBlock HorizontalAlignment="Center" FontSize="16" FontWeight="Bold">
+            <Run Text="Készlet (db)" />
+            <Run Text="🛈" Foreground="DarkSlateBlue">
+                <Run.ToolTip>
+                    <ToolTip Content="Az 5 legnagyobb darabszámú termék a készleten." />
+                </Run.ToolTip>
+            </Run>
+                </TextBlock>
+                <Border Background="#D3D3D3" Height="250">
+                    <lvc:CartesianChart Series="{Binding QuantitySeries}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Termékek" Labels="{Binding ProductLabels}">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="1" />
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Darabszám" />
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+                </Border>
+            </StackPanel>
+
+            <!-- 4. Előkészített diagram -->
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10" Width="300" Height="330">
+                <TextBlock HorizontalAlignment="Center" FontSize="16" FontWeight="Bold">
+        <Run Text="Bevétel ($)" />
+        <Run Text="🛈" Foreground="DarkSlateBlue">
+            <Run.ToolTip>
+                <ToolTip Content="A 2013-as és 2014-es évek bevételének összehasonlítása." />
+            </Run.ToolTip>
+        </Run>
+                </TextBlock>
+                <Border Background="#D3D3D3" Height="250">
+                    <lvc:CartesianChart Series="{Binding GroupedSeries}">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Év" Labels="{Binding GroupLabels}" />
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Költség" LabelFormatter="{Binding Formatter}"/>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+                </Border>
+            </StackPanel>
+
+        </Grid>
+
     </DockPanel>
 </Window>
